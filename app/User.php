@@ -41,12 +41,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    //cu functia boot creez un profil
     protected static function boot()
     {
         parent::boot(); 
         static::created(function($user){
             $user->dentist_profiles()->create([
-                'location'=>'not location',
+                'location'=>'no location',
                 'image'=>'profile/profil.png',
             ]);
         }
@@ -60,6 +61,10 @@ class User extends Authenticatable
     public function dentist_Services()
     {
         return $this->hasMany(DentistService::class);
+    }
+    public function dentist_Appointments()
+    {
+        return $this->hasMany(dentistAppointment::class);
     }
 
 }

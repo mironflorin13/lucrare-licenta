@@ -22,7 +22,7 @@ class DentistsServicesController extends Controller
     {
         $user = Auth::user();
         $post=DentistService::all()->where('user_id',$user->id);
-        return view('dentist.services.index',compact('post','user'));  
+        return view('dentist.services',compact('post','user'));  
     }
 
     public function addService(Request $req)

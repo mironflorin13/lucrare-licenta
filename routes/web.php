@@ -15,16 +15,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::redirect('/home', '/');
+
 Auth::routes(); 
+    Route::group(['middleware'=>['auth']],function(){
 
-    Route::get('/', 'DentistsProfilesController@index')->name('profile.show');
+        Route::resource('/', 'DentistsServicesController');
 
-    Route::get('/profile/{user}', 'DentistsProfilesController@index')->name('profile.show');
-    Route::get('/profile/{user}/edit', 'DentistsProfilesController@edit')->name('profile.edit');
-    Route::patch('/profile/{user}', 'DentistsProfilesController@update')->name('DentistsProfiles.update');
-Route::group(['middleware' => ['web']], function() {
-    Route::resource('/services', 'DentistsServicesController');
-    Route::POST('/services/addService','DentistsServicesController@addService');
-    Route::POST('/services/editService','DentistsServicesController@editService');
-    Route::POST('/services/deleteService','DentistsServicesController@deleteService');
-});
+        Route::get('/profile/{user}', 'DentistsProfilesController@index')->name('profile.show');
+        Route::get('/profile/{user}/edit', 'DentistsProfilesController@edit')->name('profile.edit');
+        Route::patch('/profile/{user}', 'DentistsProfilesController@update')->name('DentistsProfiles.update');
+
+        Route::resource('/services', 'DentistsServicesController');
+        Route::POST('/services/addService','DentistsServicesController@addService');
+        Route::POST('/services/editService','DentistsServicesController@editService');
+        Route::POST('/services/deleteService','DentistsServicesController@deleteService');
+
+        Route::get('/appointments','DentistAppointmentController@index');
+        Route::POST('/appointments','DentistAppointmentController@addAppointment')->name('appointments.add'); 
+        Route::POST('/appointments/editAppointment','DentistAppointmentController@editAppointment');
+        Route::POST('/appointments/deleteAppointment','DentistAppointmentController@deleteAppointment');
+
+        Route::get('/calendar','DentistAppointmentController@calendar');
+
+    });
+    Route::group(['namespace' => 'Patient','middleware'=>['auth'],'prefix'=>'patient'],function(){
+
+        Route::resource('/', 'PatientController');
+
+
+    });
+    

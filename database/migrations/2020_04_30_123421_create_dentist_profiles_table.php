@@ -19,6 +19,10 @@ class CreateDentistProfilesTable extends Migration
             $table->text('description')->nullable();
             $table->String('location')->nullable();
             $table->text('address')->nullable();
+            $table->string('schedule_m_f')->nullable();
+            $table->string('schedule_sat')->nullable();
+            $table->string('schedule_sun')->nullable();
+            $table->string('phone')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
 

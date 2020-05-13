@@ -1,4 +1,4 @@
-<div class="sidebar fixed">
+<div class="sidebar">
     <nav class="sidebar-nav" style="list-style: none;">
         <li class="nav-item">
             <a href="/profile/{{$user->id}}" class="nav-link">
@@ -13,11 +13,21 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="/profile/1" class="nav-link">
+            <a href="/appointments" class="nav-link">
                 <i class="fas fa-tooth"></i>
-                My profile
+                My appointments
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </li>
+       
     </nav>
-    <button class="sidebar-minimizer brand-minimizer" type="button">sds</button>
 </div>
