@@ -5,10 +5,10 @@
     <div class="card">
         <div class="card-header">Adauga o programare noua</div>
         <div class="card-body">    
-            <form action="/appointments" method="POST" enctype="multipart/form-data">
+            <form action="/dentist/appointments" method="POST" enctype="multipart/form-data">
               {{ csrf_field() }}
                     <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="service_name">Service name</label>
                             <div class="">
@@ -21,18 +21,28 @@
                         </div>
                     </div>
  
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <label for="service_name">Date and Time</label>
+                          <label for="service_name">Date</label>
                           <div class="">
-                            <input type="datetime-local" id="start_date" name="start_date" class="form-control datetime" required>
+                            <input type="date" id="date" name="date" class="form-control datetime" required>
+
+                          </div>
+                          
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label for="service_name">Hour</label>
+                          <div class="">
+                            <input type="time" id="time" name="time" class="form-control datetime" required>
 
                           </div>
                           
                         </div>
                       </div>
  
-                      <div class=" col-md-4 "> &nbsp;<br/>
+                      <div class=" col-md-3 "> &nbsp;<br/>
                       <button type="submit" class="btn btn-success">Add appointment</button>
                       </div>
                 </div>
@@ -50,8 +60,8 @@
                     <th width="10"></th>
                     <th>ID</th>
                     <th>Service name</th>
-                    <th>Start date</th>
-                    <th>End date</th>
+                    <th>Date</th>
+                    <th>Hour</th>
                     <th>Created By</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -63,11 +73,14 @@
                     <th width="10">-</th>
                     <th>{{$value->id}}</th>
                     <th>{{$value->service_name}}</th>
-                    <th>{{$value->start_date}}</th>
-                    <th>{{$value->end_date}}</th>
+                    <th>{{Carbon\Carbon::parse($value->start_date)->format('Y-m-d')}}</th>
+                    <th>{{Carbon\Carbon::parse($value->start_date)->format('H:i')}}</th>
                     <th>{{$value->created_by}}</th>
                     <th >
-                        <a href="#" class="edit-modal btn btn-info btn-sm mx-auto" data-id="{{$value->id}}" data-service_name="{{$value->service_name}}" data-start_date="{{$value->start_date}}" >
+                        <a href="#" class="edit-modal btn btn-info btn-sm mx-auto" data-id="{{$value->id}}"
+                                                                                   data-service_name="{{$value->service_name}}"
+                                                                                    data-start_date="{{$value->start_date}}"
+                                                                                     >
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="#" class="delete-modal btn btn-danger btn-sm" data-id="{{$value->id}}"">
@@ -79,13 +92,7 @@
         </table>
     </div>
 </div>
-<div class="card">
-    <div class="card-header">MY Event Details</div>
-    <div class="card-body" >
-        <div id="calendar"></div>
-    </div>
-  </div>
-</div>
+
 
 
 {{-- Modal Form Edit adn Delete Post --}}
@@ -156,20 +163,25 @@
       $('.modal-footer').on('click', '.edit', function() {
         $.ajax({
           type: 'POST',
-          url: 'appointments/editAppointment',
+          url: '/dentist/appointments/editAppointment',
           data: {
             '_token':$('input[name=_token]').val(),
             'id':$a,
             'service_name': $('#sn').val(),
             'start_date': $('#t').val(),
           },
+          headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
           success: function(data){
+                var a=new Date(data.start_date);
+                var aa=a.getFullYear()+'-'+a.getMonth()+'-'+a.getDay();
                 $('.post'+data.id).replaceWith("<tr class='post" + data.id + "'>"+
                 "<th>-</th>"+
                 "<th>" + data.id + "</th>"+
                 "<th>" + data.service_name + "</th>"+
-                "<th>" + data.start_date + " </th>"+
-                "<th>" + data.end_date + "  </th>"+
+                "<th>" + data.start_date +" </th>"+
+                "<th>" + data.start_date + "  </th>"+
                 "<th>" + data.created_by + " </th>"+
                 "<th><button class='edit-modal btn btn-info btn-sm mx-auto'data-id="+data.id+" data-servicename="+data.service_name+" data-start_date="+data.start_date+" >"+
                             "<i class='fas fa-edit'></i>"+
@@ -202,10 +214,13 @@
         $('.modal-footer').on('click', '.delete', function(){
         $.ajax({
             type: 'POST',
-            url: 'appointments/deleteAppointment',
+            url: '/dentist/appointments/deleteAppointment',
             data: {
             '_token': $('input[name=_token]').val(),
             'id': $id
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(data){
             $('.post' + $id).remove();

@@ -15,12 +15,12 @@ class CreateDentistServicesTable extends Migration
     {
         Schema::create('dentist_services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('dentist_id');
             $table->string('servicename');
             $table->decimal('price',8,2)->nullable();
             $table->timestamps();
             
-            $table->index('user_id');
+            $table->index('dentist_id');
         });
     }
 

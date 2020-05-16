@@ -27,31 +27,33 @@ class DentistAppointmentController extends Controller
     	$calendar_details = Calendar::addEvents($event_list); 
         $user = Auth::user();
         $appointments=DB::table('dentist_appointments')->where('dentist_id','=',$user->id)->orderByRaw('start_date')->get();
-        $services=DB::table('dentist_services')->where('user_id','=',$user->id)->get();
+        $services=DB::table('dentist_services')->where('dentist_id','=',$user->id)->get();
         return view('dentist.appointments', compact('appointments','user','services','calendar_details') );
     }
 
 
     public function addAppointment(Request $request){
         $validator =Validator::make($request->all(), [
-            'service_name'=>'required',
-            'start_date'=>'required',
+            'date'=>'required',
+            'time'=>'required',
         ]);
+        $dAt=$request['date'].' '.$request['time'];
+
         if ($validator->fails()) {
         	\Session::flash('warnning','Please enter the valid details');
-            return Redirect::to('/appointments')->withInput()->withErrors($validator);
+            return Redirect::to('/dentist/appointments')->withInput()->withErrors($validator);
         }
         $end_date=date('Y-m-d H:i:s', strtotime($request['start_date'] .' +1 hour'));
 
         $ap=new DentistAppointment;
         $ap->service_name=$request['service_name'];
-        $ap->created_by=auth()->user()->id;
-        $ap->start_date=$request['start_date'];
+        $ap->created_by=auth()->user()->name;
+        $ap->start_date=$dAt;
         $ap->end_date=$end_date;
-        $ap->dentist_id=auth()->user()->id;;
+        $ap->dentist_id=auth()->user()->id;
         $ap->save();
         \Session::flash('message','Appointment added successfully.');
-        return Redirect::to('/appointments');
+        return Redirect::to('/dentist/appointments');
     }
 
     public function editAppointment(Request $req)

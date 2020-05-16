@@ -46,6 +46,15 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'dentist' => [
+            'driver' => 'session',
+            'provider' => 'dentists',
+        ],
+        'dentist-api' => [
+            'driver' => 'token',
+            'provider' => 'dentists',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -69,6 +78,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+        'dentists' => [
+            'driver' => 'eloquent',
+            'model' => App\Dentist::class,
         ],
 
         // 'users' => [
@@ -95,6 +108,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'dentists' => [
+            'provider' => 'dentists',
             'table' => 'password_resets',
             'expire' => 60,
         ],

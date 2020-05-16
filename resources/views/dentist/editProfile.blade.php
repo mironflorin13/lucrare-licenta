@@ -4,12 +4,25 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form action="/profile/{{$user->id}}" enctype="multipart/form-data" method="post">
+            <form action="/dentist/profile/{{$user->id}}" enctype="multipart/form-data" method="post">
                 @csrf
                 @method('PATCH')
-                
                 <div class="form-group">
-                    <label for="location">Location</label>
+                    <label for="name">Name</label>
+                    <input  type="text" 
+                            class="form-control @error('name') is-invalid @enderror"
+                            id="name"
+                            name="name"
+                            value="{{old('title')??$user->dentist_profiles->name}}"
+                            >
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="location">City</label>
                     <input  type="text" 
                             class="form-control @error('location') is-invalid @enderror"
                             id="location"
@@ -89,7 +102,7 @@
                     <label class="custom-file-label" for="customFile">{{$user->dentist_profiles->image}}</label>
                   </div>
             
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
               </form>
         </div>
     </div>

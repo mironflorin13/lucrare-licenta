@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Dentist;
 use App\User;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class DentistsProfilesController extends Controller
 
     public function index($user)
     {
-        $user=User::findOrFail($user);
+        $user=Dentist::findOrFail($user);
 
         return view('dentist.profile',[
             'user'=> $user
@@ -22,14 +23,15 @@ class DentistsProfilesController extends Controller
     }
     public function edit($user)
     {
-        $user=User::findOrFail($user);
+        $user=Dentist::findOrFail($user);
         return view('dentist.editProfile',[ 
             'user'=>$user
         ]);
     }
-    public function update(User $user)
+    public function update(Dentist $user)
     {
         $data = request()->validate([
+            'name'=>'required',
             'location'=>'required',
             'address'=>'required',
             'description'=>'',
@@ -46,14 +48,15 @@ class DentistsProfilesController extends Controller
         }
         else
         {
-           $ma=DentistProfile::all()->where('user_id', $user->id);
-           $imagePath=$ma[0]['image'];
+           $ma=DentistProfile::all()->where('dentist_id', $user->id)->first();
+
+           $imagePath=$ma['image'];
         }
         auth()->user()->dentist_profiles->update(array_merge(
             $data,
   
             ['image'=>$imagePath]
         ));
-        return redirect("/profile/{$user->id}");
+        return redirect("/dentist/profile/{$user->id}");
     }
 }

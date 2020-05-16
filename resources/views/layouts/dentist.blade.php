@@ -37,10 +37,11 @@
 <body class="app sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show" style="padding-top:50px;">
 
     <header class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-        <button type="button sidebar-toggler" class="btn btn-black mr-3" data-toggle="sidebar-lg-show">
+        
+        {{-- <button type="button sidebar-toggler" class="btn btn-black mr-3" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="{{ url('/profile/'.$user->id)}}">
+        </button> --}}
+        <a class="navbar-brand ml-5" href="{{ route('dentist.dashboard')}}">
             {{ config('app.name', 'Laravel') }}
         </a>
 

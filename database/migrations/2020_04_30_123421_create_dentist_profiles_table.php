@@ -15,9 +15,10 @@ class CreateDentistProfilesTable extends Migration
     {
         Schema::create('dentist_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('dentist_id');
             $table->text('description')->nullable();
             $table->String('location')->nullable();
+            $table->String('name')->nullable();
             $table->text('address')->nullable();
             $table->string('schedule_m_f')->nullable();
             $table->string('schedule_sat')->nullable();
@@ -26,7 +27,7 @@ class CreateDentistProfilesTable extends Migration
             $table->string('image')->nullable();
             $table->timestamps();
 
-            $table->index('user_id');
+            $table->index('dentist_id');
         });
     }
 

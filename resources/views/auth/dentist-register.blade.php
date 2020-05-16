@@ -1,14 +1,35 @@
- @extends('layouts.app')
+@extends('layouts.appDentist')
 
 @section('content')
 <div class="container">
+    <main class="main">
+        <div style="padding-top: 20px" class="container-fluid">
+            @if(session('message'))
+                <div class="row mb-2">
+                    <div class="col-lg-12">
+                        <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                    </div>
+                </div>
+            @endif
+            @if($errors->count() > 0)
+                <div class="alert alert-danger">
+                    <ul class="list-unstyled">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @yield('content')
+        </div>
+    </main>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('dentist.register.submit') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -39,7 +60,6 @@
                             </div>
                         </div>
 
-                        
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>

@@ -17,7 +17,7 @@ class CreateDentistAppointmentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('service_name');
             $table->unsignedBigInteger('dentist_id');
-            $table->unsignedBigInteger('created_by');
+            $table->String('created_by');
             $table->datetime('start_date');
             $table->datetime('end_date');
             $table->timestamps();
