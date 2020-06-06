@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\DentistResetPasswordNotification;
 
 class Dentist extends Authenticatable
 {
@@ -62,6 +63,12 @@ class Dentist extends Authenticatable
 
         );
     }
+    //reset password for dentist
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new DentistResetPasswordNotification($token));
+    }
+
     public function dentist_Profiles()
     {
         return $this->hasOne(DentistProfile::class);

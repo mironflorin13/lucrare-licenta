@@ -26,4 +26,5 @@ class DentistLoginController extends Controller
        }
        return redirect()->back()->withInput($request->only('email','remember'));
     }
+
 }

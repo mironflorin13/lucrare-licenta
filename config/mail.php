@@ -15,7 +15,7 @@ return [
     |            "sparkpost", "postmark", "log", "array"
     |
     */
-
+    
     'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*

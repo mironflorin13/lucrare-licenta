@@ -35,11 +35,12 @@ class DentistsProfilesController extends Controller
             'location'=>'required',
             'address'=>'required',
             'description'=>'',
-            'phone'=>'min:10|max:110',
+            'phone'=>'numeric',
             'schedule_m_f'=>'',
             'schedule_sat'=>'',
             'schedule_sun'=>'',
         ]); 
+        
         if(request('image'))
         {
             $imagePath=request('image')->store('profile','public');

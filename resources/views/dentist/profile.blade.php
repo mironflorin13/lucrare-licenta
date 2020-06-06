@@ -1,8 +1,8 @@
 @extends('layouts.dentist')
 
 @section('content')
-<div class="container">
-    <div class="row pt-4">
+
+    {{-- <div class="row pt-4">
         <div class="col-4 " style='min-width:300px;'>
             <img src="/storage/{{$user->dentist_profiles->image}}" alt="Imagine Profil" class="w-100" >
         </div>
@@ -21,6 +21,44 @@
             
 
         </div>
+    </div> --}}
+<div class="card-content">
+    <div class="card-post">
+        <div class="card-post__img">
+            <img src="/storage/{{$user->dentist_profiles->image}}" alt="Profil Image">
+        </div>
+        <div class="card-post__info">
+            
+            <h1 class="card-post__title">{{$user->dentist_profiles->name}}</h1>
+            
+           
+            <p class="card-post__description">
+                {{$user->dentist_profiles->description}}
+            </p>
+            
+            <div class="card-post__city">
+                <span><b>City: </b>{{$user->dentist_profiles->location}}</span>
+                <span><b>Address: </b>{{$user->dentist_profiles->address}}</span>
+                <span><b>Phone: </b>{{$user->dentist_profiles->phone}}</span>
+            </div>
+            <div class="card-post__date" style="display: flex">
+                <div><h4>Schedule:</h4></div>
+                <div class="card-post__text">
+                    <span>Monday-Friday:</span>   
+                    <span>Saturday: </span>   
+                    <span>Sunday:</span>   
+                </div>
+                <div class="card-post__text">
+                    <span>{{$user->dentist_profiles->schedule_m_f}}</span>   
+                    <span>{{$user->dentist_profiles->schedule_sun}}</span>   
+                    <span>{{$user->dentist_profiles->schedule_sat}}</span>   
+                </div>
+            </div>
+            
+            <a href="/dentist/profile/{{$user->id}}/edit" class="card-post__btn">Edit Profile</a>
+        </div>
     </div>
 </div>
+
+
 @endsection

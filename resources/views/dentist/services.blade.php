@@ -1,49 +1,52 @@
 @extends('layouts.dentist')
 @section('content')
-
-<div style="margin-bottom: 10px;" class="row">
-    <div class="col-lg-12">
-        <a class="btn btn-success" id="addNewService" href="#">
-            Add New Service
-        </a>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">
-       Services List 
-    </div>
-
-    <div class="card-body">
-        <table id="table" class=" table text-center  table-bordered table-striped table-hover ajaxTable datatable datatable-Service">
-            <thead>
-                <tr>
-                    <th width="10"></th>
-                    <th>ID </th>
-                    <th>Service name</th>
-                    <th>Price</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            {{csrf_field()}}
-
-            @foreach ($post as $value)
-                <tr class="post{{$value->id}}">
-                    <th width="10">-</th>
-                    <th>{{$value->id}}</th>
-                    <th>{{$value->servicename}}</th>
-                    <th>{{$value->price}} lei</th>
-                    <th >
-                        <a href="#" class="edit-modal btn btn-info btn-sm mx-auto" data-id="{{$value->id}}" data-servicename="{{$value->servicename}}" data-price="{{$value->price}}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="#" class="delete-modal btn btn-danger btn-sm" data-id="{{$value->id}}"">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </th>
-                </tr>
-            @endforeach
-        </table>
+<div class='service'>
+    <div class="service-content">
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" id="addNewService" href="#">
+                    Add New Service
+                </a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+               Services List 
+            </div>
+        
+            <div class="card-body" >
+                <table id="table" class="table text-center table-bordered table-striped table-hover ajaxTable datatable datatable-Service" >
+                    <thead>
+                        <tr>
+                            <th width="10"></th>
+                            <th>ID </th>
+                            <th>Service name</th>
+                            <th>Price</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    {{csrf_field()}}
+        
+                    @foreach ($post as $value)
+                        <tr class="post{{$value->id}}">
+                            <th width="10">-</th>
+                            <th>{{$value->id}}</th>
+                            <th>{{$value->servicename}}</th>
+                            <th>{{$value->price}} lei</th>
+                            <th >
+                                <a href="#" class="edit-modal btn btn-info btn-sm mx-auto" data-id="{{$value->id}}" data-servicename="{{$value->servicename}}" data-price="{{$value->price}}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="#" class="delete-modal btn btn-danger btn-sm" data-id="{{$value->id}}"">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </th>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -60,6 +63,16 @@
 
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
+
+                    <div class="form-group ">
+                        <div class="error alert alert-danger justify-content-center align-items-center">  
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="success alert alert-success"">  
+                        </div>
+                    </div>
+
                     <div class="form-group ">
                         <label class="control-label" for="title">Service name</label>
                         <div>
@@ -109,11 +122,11 @@
                     <div class="form-group ">
                         <label class="control-label" for="title">Service name</label>
                         <div>
-                            <input type="name" class="form-control" id="sn" name="servicename" required>
+                            <input type="name" class="form-control" id="sn" name="servicename" readonly>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label " for="body">Price</label>
+                        <label class="control-label " for="body">Price(lei)*</label>
                         <div>
                             <input type="number" class="form-control"  id="p" min="1" max="9999" pattern="\d*" maxlength="4" name="price" required>
                         </div>
@@ -138,43 +151,57 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
+
     {{-- ajax Form Add Post--}}
       $(document).on('click','#addNewService', function() {
         $('#create').modal('show');
-        $('.form-horizontal').show();
+        $('.error').hide();
+        $('.success').hide();
         $('.modal-title').text('Add new service');
       });
       $("#add").click(function() {
         $.ajax({
-          type: 'POST',
-          url: 'services/addService',
-          data: {
-            '_token':$('input[name=_token]').val(),
-            'user_id':{{$user->id}},
-            'servicename': $('input[name=servicename]').val(),
-            'price': $('input[name=price]').val()
-          },
-          success: function(data){
-                if ((data.errors)) {
-                $('.error').removeClass('hidden');
-                $('.error').text(data.errors.servicename);
-                $('.error').text(data.errors.price);
-                } else {
-                $('.error').remove();
-                $('#table').prepend("<tr class='post" + data.id + "'>"+
-                "<th>-</th>"+
-                "<th>" + data.id + "</th>"+
-                "<th>" + data.servicename + "</th>"+
-                "<th>" + data.price + " lei </th>"+
-                "<th><button class='edit-modal btn btn-info btn-sm mx-auto'data-id="+data.id+" data-servicename="+data.servicename+" data-price="+data.price+" >"+
-                            "<i class='fas fa-edit'></i>"+
-                        "</button>  "+
-                        "<button class='delete-modal btn btn-danger btn-sm' data-id="+data.id+">"+
-                        "   <i class='fas fa-trash-alt'></i>"+
-                        "</button>"+
-                "</th> ");
-                 }
+            type: 'POST',
+            url: 'services',
+            data: {
+                '_token':$('input[name=_token]').val(),
+                'user_id':{{$user->id}},
+                'servicename': $('input[name=servicename]').val(),
+                'price': $('input[name=price]').val()
             },
+            success: function(data){
+                    if ((data.error)) {
+                    $('.error').show();
+                    $('.success').hide();
+                    console.log(data.error);
+                    $('.error').html("");
+                    $.each(data.error, function(k, v) {
+                        $('.error').append('<p>'+data.error[k]+'</p>');
+                        
+                    });
+                    
+              
+                    } else {
+                    $('.success').show();
+                    $('.error').hide();
+                    $('.success').html("");
+                    $('.success').append('<p>'+'Service white name '+data.servicename+' has been added!'+'</p>');
+                        
+                    $('#table').prepend("<tr class='post" + data.id + "'>"+
+                    "<th>-</th>"+
+                    "<th>" + data.id + "</th>"+
+                    "<th>" + data.servicename + "</th>"+
+                    "<th>" + data.price + "lei </th>"+
+                    "<th><button class='edit-modal btn btn-info btn-sm mx-auto'data-id="+data.id+" data-servicename="+data.servicename+" data-price="+data.price+" >"+
+                                "<i class='fas fa-edit'></i>"+
+                            "</button>  "+
+                            "<button class='delete-modal btn btn-danger btn-sm' data-id="+data.id+">"+
+                            "   <i class='fas fa-trash-alt'></i>"+
+                            "</button>"+
+                    "</th> ");
+                    }
+                },
+
         });
       });
     {{-- ajax Form Edit Post--}}
@@ -185,11 +212,11 @@
         $('.actionBtn').addClass('btn-success');
         $('.actionBtn').removeClass('btn-danger');
         $('.actionBtn').addClass('edit');
-        $('.modal-title').text('Post Edit');
+        $('.modal-title').text('Edit Service');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
 
-        $a=$(this).data('id');
+        $id=$(this).data('id');
         $('#sn').val($(this).data('servicename'));
         $('#p').val($(this).data('price'));
         $('#editAndDeleteService').modal('show');
@@ -197,11 +224,11 @@
       $('.modal-footer').on('click', '.edit', function() {
         $.ajax({
           type: 'POST',
-          url: 'services/editService',
+          url: 'services/{$id}',
           data: {
+            '_method': 'PUT',
             '_token':$('input[name=_token]').val(),
-            'id':$a,
-            'servicename': $('#sn').val(),
+            'id':$id,
             'price': $('#p').val()
           },
           success: function(data){
@@ -230,7 +257,7 @@
         $('.actionBtn').removeClass('btn-success');
         $('.actionBtn').addClass('btn-danger');
         $('.actionBtn').addClass('delete');
-        $('.modal-title').text('Delete Post');
+        $('.modal-title').text('Delete Service');
         $id=$(this).data('id');
         $('.deleteContent').show();
         $('.form-horizontal').hide();
@@ -241,13 +268,14 @@
         $('.modal-footer').on('click', '.delete', function(){
         $.ajax({
             type: 'POST',
-            url: 'services/deleteService',
+            url: 'services/{$id}',
             data: {
-            '_token': $('input[name=_token]').val(),
-            'id': $id
+                '_method': 'DELETE',
+                '_token': $('input[name=_token]').val(),
+                'id': $id
             },
             success: function(data){
-            $('.post' + $id).remove();
+                $('.post' + $id).remove();
             }
         });
     });

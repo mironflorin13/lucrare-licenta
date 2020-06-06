@@ -17,7 +17,7 @@ class CreateDentistServicesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('dentist_id');
             $table->string('servicename');
-            $table->decimal('price',8,2)->nullable();
+            $table->decimal('price',8,0)->nullable();
             $table->timestamps();
             
             $table->index('dentist_id');

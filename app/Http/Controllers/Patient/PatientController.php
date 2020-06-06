@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Patient;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use App\User;
-use App\Dentist;
 use Validator;
 use App\DentistAppointment;
+use App\User;
+use App\Dentist;
+use App\Mail\SuccessfullyScheduled;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Mail;
 
 class PatientController extends Controller
 {
@@ -52,6 +54,11 @@ class PatientController extends Controller
         $ap->end_date=$end_date;
         $ap->dentist_id=$request['id'];
         $ap->save();
+        $data=array(
+            'date'=>$request['date'],
+            'time'=>$request['time']
+        );
+        Mail::to(auth()->user()->email)->send(new SuccessfullyScheduled($data));
         \Session::flash('message',"You were successfully scheduled on ".$request['date']." at ".$request['time']." o'clock .");
         return Redirect::to('/patient');
     }

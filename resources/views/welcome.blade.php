@@ -9,6 +9,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+        
         <!-- Styles -->
         <style>
             html, body {
@@ -50,10 +51,10 @@
             </div>
             <div class="row">
                 <div class="links col-md-6 p-5 " style="background:red">
-                    <a href="{{ route('login') }}" style="color:white">Patient-Login</a>
+                    <a href="{{ route('login') }}" style="color:white">Patient</a>
                 </div>
                 <div class="links col-md-6 p-5" style="background:rgb(18, 27, 146)">
-                    <a href="{{ route('dentist.login') }}" style="color:white">Dentist-Login</a>
+                    <a href="{{ route('dentist.login') }}" style="color:white">Dentist</a>
                 </div>
             </div>
         </div>
