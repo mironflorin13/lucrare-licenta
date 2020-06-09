@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 Use DateTime;
-Use  DateInterval;
+use Calendar;
+
+use Validator;
+Use DateInterval;
+use App\User;
+use App\DentistAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Calendar;
-use App\User;
-use Validator;
 use Illuminate\Support\Facades\Auth;
-use App\DentistAppointment;
 use Illuminate\Support\Facades\DB;
 
 class DentistAppointmentController extends Controller
@@ -28,15 +29,15 @@ class DentistAppointmentController extends Controller
     public function store(Request $request)
     {
         $validator =Validator::make($request->all(), [
-            'time'=>'required',
-            'service_name'=>'required',
-            'patient_name'=>'required',
-            'time'=>'required',
-            'phone'=>'required',
-            'duration'=>'required | numeric',
+            'time'         =>'required',
+            'service_name' =>'required | max:100',
+            'patient_name' =>'required | max:35',
+            'phone'        =>'required | numeric',
+            'duration'     =>'required | numeric',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
         	\Session::flash('warning','Please enter the valid details');
             return Redirect::to('/dentist/appointments')->withInput()->withErrors($validator);
         }
@@ -53,11 +54,14 @@ class DentistAppointmentController extends Controller
         $hours = intdiv($minutes, 60).':'. ($minutes % 60);
         
         $result=DB::table('dentist_appointments')->where('dentist_id','=',auth()->user()->id)
-                                                 ->whereBetween('start_date',[$request['time'],$end])
-                                                 ->orWhereBetween('end_date',[$start,$end_date])
-                                                 ->orWhereRaw('? BETWEEN start_date and end_date', $start) 
-                                                 ->orWhereRaw('? BETWEEN start_date and end_date', $end)
-                                                 ->first();
+                                                 ->where(function($query)use($request,$end,$start,$end_date)
+                                                 {  
+                                                   return $query->whereBetween('start_date',[$request['time'],$end])
+                                                        ->orWhereBetween('end_date',[$start,$end_date])
+                                                        ->orWhereRaw('? BETWEEN start_date and end_date', $start) 
+                                                        ->orWhereRaw('? BETWEEN start_date and end_date', $end);
+                                                 })->first();
+       
         if($result==null)
         {
             $ap = new DentistAppointment;

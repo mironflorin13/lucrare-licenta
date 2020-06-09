@@ -19,7 +19,7 @@ class DentistsServicesController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $post=DB::table('dentist_services')->where('dentist_id','=',$user->id)->orderBy('servicename')->get();
+        $post = DB::table('dentist_services')->where('dentist_id','=',$user->id)->orderBy('servicename')->get();
 
         return view('dentist.services',compact('post','user'));  
     }

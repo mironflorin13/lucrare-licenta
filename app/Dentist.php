@@ -53,7 +53,7 @@ class Dentist extends Authenticatable
                 'name'=>'No Name',             
                 'location'=>'Iasi',
                 'phone'=>'0123456789',
-                'schedule_m_f'=>'8AM-5PM',
+                'schedule_m_f'=>'8:00-17:00',
                 'schedule_sat'=>'CLOSE',
                 'schedule_sun'=>'CLOSE',
                 'description'=>"I'm a dentist",

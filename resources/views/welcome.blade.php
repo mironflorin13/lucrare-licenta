@@ -47,7 +47,7 @@
 
         <div class="content pt-4">
             <div class="title m-b-md">
-                Dintisor
+                DENTIST
             </div>
             <div class="row">
                 <div class="links col-md-6 p-5 " style="background:red">

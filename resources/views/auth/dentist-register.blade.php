@@ -11,6 +11,7 @@
                     </div>
                 </div>
             @endif
+            
             @if($errors->count() > 0)
                 <div class="alert alert-danger">
                     <ul class="list-unstyled">
@@ -29,7 +30,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('dentist.register.submit') }}">
+                    <form method="POST" class="form-prevent-multiple-submit" action="{{ route('dentist.register.submit') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -85,7 +86,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary button-prevent-multiple-submit">
                                     {{ __('Register') }}
                                 </button>
                             </div>

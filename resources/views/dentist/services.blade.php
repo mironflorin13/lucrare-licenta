@@ -76,7 +76,7 @@
                     <div class="form-group ">
                         <label class="control-label" for="title">Service name</label>
                         <div>
-                            <input type="name" class="form-control" id="title" name="servicename" placeholder="Your Service" required>
+                            <input type="name" maxlength="80" class="form-control" id="title" name="servicename" placeholder="Your Service" required>
                         </div>
                     </div>
                     <div class="form-group">

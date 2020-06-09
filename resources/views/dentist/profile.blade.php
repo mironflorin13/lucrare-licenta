@@ -50,8 +50,8 @@
                 </div>
                 <div class="card-post__text">
                     <span>{{$user->dentist_profiles->schedule_m_f}}</span>   
-                    <span>{{$user->dentist_profiles->schedule_sun}}</span>   
                     <span>{{$user->dentist_profiles->schedule_sat}}</span>   
+                    <span>{{$user->dentist_profiles->schedule_sun}}</span>   
                 </div>
             </div>
             

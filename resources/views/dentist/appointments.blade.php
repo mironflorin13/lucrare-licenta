@@ -6,7 +6,7 @@
 <div class="card" >
     <div class="card-header">Adauga o programare noua</div>
     <div class="card-body text-center ">    
-        <form action="/dentist/appointments" method="POST" enctype="multipart/form-data">
+        <form action="/dentist/appointments" class="form-prevent-multiple-submit" method="POST" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 
@@ -26,7 +26,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Patient Name*</label>
-                        <input id="patient_name" name="patient_name" class="form-control" value="{{ old('patinet_name') }}">
+                        <input id="patient_name" maxlength="35" name="patient_name" class="form-control" value="{{ old('patinet_name') }}">
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
                 <div class="col-md-2">
                     <div class="form-group" >
                         <label>Phone*</label>
-                        <input id="phone" name="phone" class="form-control" value="{{ old('phone') }}">
+                        <input id="phone" maxlength="10" name="phone" class="form-control" value="{{ old('phone') }}">
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="pull-right"> &nbsp;<br/>
-                <button type="submit" class="btn btn-success">Add appointment</button>
+                <button type="submit" class="btn btn-success button-prevent-multiple-submit">Add appointment</button>
             </div>
         </form>
     </div>
@@ -200,12 +200,10 @@
     $(document).ready( function(){
         $('.datetime').datetimepicker({
             format: 'Y-M-D HH:mm',
-            daysOfWeekDisabled: [0,6],
-            sideBySide: true,
+            sideBySide: true,            
             locale: 'en',
             minDate: new Date(),
-            daysOfWeekDisabled: [0,6],
-            disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 17, 18, 19,20, 21, 22, 23, 24],
+            disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24],
             stepping: 15,
             icons: {
                     time: 'far fa-clock',

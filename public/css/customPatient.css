@@ -13,7 +13,7 @@ main{
 }
 /* Pagina care afiseaza toti doctorii */
 .dentistCard{
-    min-width: 28rem;   
+    min-width: 26rem;   
     margin: auto;
     
 }
@@ -23,7 +23,7 @@ main{
     }
 }
 .dentistCard .card{
-    width:26rem; 
+    width:24rem; 
     margin: auto;
     margin-bottom: 2rem;
 }
@@ -108,6 +108,17 @@ main{
     flex-direction: column;
     padding-left: 10px;
   }
+  .card-post__date{
+    display: flex;
+  }
+  .card-post__date_2{
+    display: flex;
+  }
+  @media screen and (max-width:400px){
+    .card-post__date{
+        display: inline;
+    }
+}
   .card-post__btn{
     margin-top: 10px;
     display:inline-block;
@@ -182,3 +193,10 @@ main{
     font-size:1rem;
     color: rgb(0, 0, 0);
   }
+  /*codul pe textul de la  pacient  */
+
+  .mesaj{
+    margin-top: 35px;
+    text-align: center;
+  }
+  

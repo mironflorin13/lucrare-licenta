@@ -53,9 +53,7 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     
-                                    @if(Auth::User()->function=='doctor')
-                                        Doctor {{ Auth::User()->name }} <span class="caret"></span>
-                                    @else 
+                                    @if(Auth::User())
                                         {{ Auth::User()->name }} <span class="caret"></span>
                                     @endif
 
@@ -82,7 +80,7 @@
         <main class="py-4">
             @yield('content')
         </main>
-        
+        <script src="{{asset('js/patient.js') }}" ></script>
         @yield('scripts')
     </div>
 </body>

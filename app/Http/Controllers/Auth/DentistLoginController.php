@@ -24,7 +24,8 @@ class DentistLoginController extends Controller
        {
             return redirect()->intended(route('dentist.dashboard'));
        }
-       return redirect()->back()->withInput($request->only('email','remember'));
+       \Session::flash('message','Email or password do not mach!');
+       return redirect()->back()->withInput($request->only('email','remember'),);
     }
 
 }

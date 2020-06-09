@@ -21,8 +21,8 @@
             defaultView: 'agendaWeek',
             
             minTime: "08:00:00",
-            maxTime: "17:00:00",
-            height:815,
+            maxTime: "20:00:00",
+            height:840,
             events: events,
             firstDay: 1,
             allDaySlot: false,

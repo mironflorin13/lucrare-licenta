@@ -3,14 +3,16 @@
 @section('content')
 <div class="container">
     <main class="main">
-        <div style="padding-top: 20px" class="container-fluid">
+        <div class="container-fluid">
+
             @if(session('message'))
                 <div class="row mb-2">
                     <div class="col-lg-12">
-                        <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                        <div class="alert alert-danger" role="alert">{{ session('message') }}</div>
                     </div>
                 </div>
             @endif
+
             @if($errors->count() > 0)
                 <div class="alert alert-danger">
                     <ul class="list-unstyled">
@@ -20,9 +22,11 @@
                     </ul>
                 </div>
             @endif
-            @yield('content')
+            
         </div>
     </main>
+
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

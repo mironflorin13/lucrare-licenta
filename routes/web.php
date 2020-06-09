@@ -21,9 +21,10 @@ Auth::routes();
 Route::group(['namespace' => 'Patient','middleware'=>['auth'],'prefix'=>'patient'],function(){
 
     Route::resource('/', 'PatientController');
-    Route::get('allD','PatientController@showDentists');
-    Route::POST('allD/','PatientController@createAppointment')->name("createAppointment");
-    Route::get('allD/{user}','PatientController@viewDentistProfile')->name("patient.viewDProfile");
+    Route::get('/allD','PatientController@showDentists');
+    Route::POST('/allD','PatientController@createAppointment')->name("createAppointment");
+    Route::get('/allD/{user}','PatientController@viewDentistProfile')->name("patient.viewDProfile");
+    Route::get('/hours','PatientController@checkAvailableHours');
     
 });
 
