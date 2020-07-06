@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Patient','middleware'=>['auth'],'prefix'=>'patient
     Route::resource('/', 'PatientController');
     Route::get('/allD','PatientController@showDentists');
     Route::POST('/allD','PatientController@createAppointment')->name("createAppointment");
+    Route::POST('/reviews','PatientController@createReview')->name("createReview");
     Route::get('/allD/{user}','PatientController@viewDentistProfile')->name("patient.viewDProfile");
     Route::get('/hours','PatientController@checkAvailableHours');
     
@@ -60,5 +61,6 @@ Route::group(['prefix'=>'dentist'],function(){
 
         Route::get('/calendar','DentistAppointmentController@calendar');
 
+        Route::get('/reviews','DentistAppointmentController@reviews');
     });
 });

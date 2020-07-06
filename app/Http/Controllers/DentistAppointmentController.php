@@ -8,6 +8,7 @@ use Calendar;
 use Validator;
 Use DateInterval;
 use App\User;
+use App\Dentist;
 use App\DentistAppointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -66,9 +67,11 @@ class DentistAppointmentController extends Controller
         {
             $ap = new DentistAppointment;
             $ap->service_name = $request['service_name'];
-            $ap->created_by = auth()->user()->name;
+            $ap->created_by = "You";
+            $ap->created_by_id=0;
             $ap->start_date = $request['time'];
             $ap->end_date=$end_date;
+            $ap->review=0;
             $ap->dentist_id=auth()->user()->id;
             $ap->phone = $request['phone'];
             $ap->patient_name = $request['patient_name'];
@@ -141,5 +144,11 @@ class DentistAppointmentController extends Controller
 
         return view('dentist.calendar',['events_list'=>$events_list,'user'=>$user]);
     }
-
+    public function reviews(){ 
+        $user = Auth::user();
+        $reviews= DB::table('reviews')->where('dentist_id','=',auth()->user()->id)->get();
+        $reviews_nr=count($reviews);
+        
+        return view('dentist.reviews',compact('reviews','user','reviews_nr'));
+    }
 }

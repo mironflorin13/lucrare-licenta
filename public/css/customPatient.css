@@ -199,4 +199,62 @@ main{
     margin-top: 35px;
     text-align: center;
   }
+  #table_t{
+    width:100%;
+    
+  }
+  .table_tr{  
+    height:7rem ;
+    width:100%;
+    
+    
+    
+  }
+  .table_td{
+    
+    display: flex;
+    
+  }
+ .div_name{
+   text-align: center;
+ }
+ .div_name_date{
+  align-items: center;
+  display: flex;
+  width:100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-right: 1px solid ;
+  padding-right: 10px;
+  padding-left: 10px;
   
+  
+ }
+ .div_circle{
+  background-color: rgb(247, 250, 102);
+  min-width: 5rem;
+  min-height: 5rem;
+  max-height: 5rem;
+  
+  border-radius: 50%;
+  text-align: center;
+  font-size:3rem;
+  float: left;
+ }
+ @media screen and (max-width:800px){
+  .div_circle{
+    min-width: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    font-size:2rem;
+   }
+  }
+ .div_date{
+  justify-content: center;
+ }
+ .td_review{
+   width:70%;
+ }
+ .pointer{
+   cursor: pointer;
+ }

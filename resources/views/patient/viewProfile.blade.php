@@ -39,9 +39,9 @@
             </div>
         </div>
     </div>
-    
+   
     <div class="card ">
-        <div class="card-header">Adauga o programare noua</div>
+        <div class="card-header">Add an appointment</div>
         <div class="card-body"> 
             <meta name="csrf-token" content="{{ csrf_token() }}">   
             <form action="{{route('createAppointment')}}" class="form-prevent-multiple-submit" method="POST" enctype="multipart/form-data">
@@ -86,6 +86,7 @@
                 </div>
                 
                 <input type="hidden"  name="id" value="{{$user->id}}">
+                
                 <div class="hidd show1"> &nbsp;<br/>
                     <button type="submit" class="btn btn-success button-prevent-multiple-submit" style="float: right;">Add Appointmet</button>
                 </div>
@@ -93,13 +94,40 @@
             </form>
         </div>
     </div>
-
+    <div id="review" <?php if ($review==0){?>style="display:none"<?php } ?>>
+        <div class="card ">
+            <div class="card-header">Write a review</div>
+            <div class="card-body"> 
+                <meta name="csrf-token" content="{{ csrf_token() }}">   
+                <form action="{{route('createReview')}}" class="form-prevent-multiple-submit" method="POST" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <textarea maxlength="400" name="review" style='width:100%'></textarea>
+                        </div>
+                        <input type="hidden"  name="id" value="{{$user->id}}">
+                        
+                        <div class="col-md-3">
+                            <button type="submit" style="float: right;padding:7px 30px;" class="btn btn-success button-prevent-multiple-submit" >Add review</button>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
     <div class="card">
-        <div class="card-header">
-           Services List 
+        <div class="card-header" >
+            <a class="card-link pointer" data-toggle="collapse" data-target="#demo">
+                Services List <i class="fas fa-angle-down"></i>
+            </a>
+           
+           
         </div>
     
-        <div class="card-body">
+        <div class="card-body collapse" id="demo" >
             <table id="table" class=" table text-center  table-bordered table-striped table-hover ajaxTable datatable datatable-Service">
                 <thead>
                     <tr>
@@ -120,15 +148,50 @@
             </table>
         </div>
     </div>
+    <div <?php if ($reviews_nr==0){?>style="display:none"<?php } ?>>
+        <div class="card ">
+            <div class="card-header">
+                <a class="card-link pointer" data-toggle="collapse" data-target="#revi">
+                    Reviews <i class="fas fa-angle-down"></i>
+                </a>
+                
+                
+            </div>
+            <div class="card-body collapse" id="revi"> 
+                <table id="table_t" class=" table text-center display ">
+                    @foreach ($reviews as $rev)
+                    <tr class="table_tr">
+                        <td class="table_td">
+                            <div class="div_circle">{{substr($rev->patient_name,0,2)}}</div>
+                            <div class="div_name_date">
+                                <div class="div_name"> {{$rev->patient_name}}</div>
+                                <div class="div_date"> {{date('Y-m-d', strtotime($rev->created_at))}}</div>
+                            </div>
+                        </td>
+                        <td class="td_review">{{$rev->review}}</td>
+                    </tr>
+                @endforeach
+                </table>
+                
+            </div>
+        </div>
+    </div>
 </div>
+
 @endsection
 
 @section('scripts')
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
-
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" type="text/javascript"></script>
+   
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabel_t').DataTable( {
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+        } );
+    } );
     $(document).ready( function(){
         $a = $(this).data('id');
         $('.hidd').hide();
@@ -210,6 +273,6 @@
        
     });
 </script>
-
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkiGv2h1IOQCgr2R-S48Gb8jjbxg55v8w">
+</script>
 @endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Patient;
 use Validator;
 Use DateTime;
 Use DateInterval;
+use Carbon\Carbon;
+use App\Reviews;
 use App\DentistAppointment;
 use App\User;
 use App\Dentist;
@@ -30,11 +32,19 @@ class PatientController extends Controller
     }
     public function viewDentistProfile($u)
     {
-        
         $user=Dentist::findOrFail($u);
+        
         $services=DB::table('dentist_services')->where('dentist_id','=',$u)->orderBy('servicename')->get();
-        return view('patient.viewProfile',compact('user','services'));
+        $review=DB::table('dentist_appointments')->where('dentist_id','=',$u)
+                                                 ->where('created_by_id','=',auth()->user()->id)
+                                                 ->where('end_date','<',Carbon::now('UTC')->addHour(3))
+                                                 ->get()->count();
+       
+        $reviews=DB::table('reviews')->where('dentist_id','=',$u)->get();
+        $reviews_nr=$reviews->count();
+        return view('patient.viewProfile',compact('user','services','review','reviews','reviews_nr'));
     }
+
     public function createAppointment(Request $request){
         $validator =Validator::make($request->all(), [
             'service_name'=>'required',
@@ -46,7 +56,7 @@ class PatientController extends Controller
         
         if ($validator->fails()) {
         	\Session::flash('warnning','Please enter the valid details');
-            return Redirect::to("patient/allD/{{$request['id']}}")->withInput()->withErrors($validator);
+            return Redirect::to("patient/allD/".$request['id'])->withInput()->withErrors($validator);
         }
         $end_date=new Datetime($dAt);
         $end_date->add(new DateInterval('PT' . 60 . 'M'));
@@ -55,10 +65,12 @@ class PatientController extends Controller
         $ap=new DentistAppointment;
         $ap->service_name=$request['service_name'];
         $ap->created_by=auth()->user()->name;
+        $ap->created_by_id=auth()->user()->id;
         $ap->start_date=$dAt;
         $ap->end_date=$end_date;
         $ap->dentist_id=$request['id'];
         $ap->phone ="123456789";
+        $ap->review=0;
         $ap->patient_name = auth()->user()->name;
         $ap->duration = "1:00:00";
         $ap->save();
@@ -69,6 +81,26 @@ class PatientController extends Controller
         Mail::to(auth()->user()->email)->send(new SuccessfullyScheduled($data));
         \Session::flash('message',"You were successfully scheduled on ".$request['date']." at ".$request['ora']." o'clock .");
         return Redirect::to('/patient/allD');
+    }
+    public function createReview(Request $request){
+        $validator =Validator::make($request->all(), [
+            'review'=>'required',
+            
+            'id'=>'required'
+        ]);
+        if ($validator->fails()) {
+        	\Session::flash('warnning','Please enter the valid details');
+            return Redirect::to("patient/allD/".$request['id'])->withInput()->withErrors($validator);
+        }
+        $rev=new Reviews;
+        $rev->review=$request['review'];
+        $rev->dentist_id=$request['id'];
+        $rev->patient_name=auth()->user()->name;
+        $rev->patient_id=auth()->user()->id;
+        $rev->save();
+        \Session::flash('message',"Your review has been added successfully.");
+        return Redirect::to("/patient/allD/".$request['id']);
+
     }
     public function checkAvailableHours(Request $request)
     {
