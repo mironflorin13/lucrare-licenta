@@ -1,7 +1,7 @@
 @component('mail::message')
 # Introduction
 
-Welcome to our application.
+Welcome to our website!
 
 Thanks,<br>
 {{ config('app.name') }}

@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 mesaj  hidd show2">
-                        <h4>No availble hours!</h4>
+                        <h4>No available hours!</h4>
                     </div>
                     <div class="col-md-4 mesaj  hidd show3">
                         

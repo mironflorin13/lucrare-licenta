@@ -4,7 +4,7 @@
 
 
 <div class="card" >
-    <div class="card-header">Adauga o programare noua</div>
+    <div class="card-header">Add a new appointment</div>
     <div class="card-body text-center ">    
         <form action="/dentist/appointments" class="form-prevent-multiple-submit" method="POST" enctype="multipart/form-data">
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 Use DateTime;
 use Calendar;
-
+use Carbon\Carbon;
 use Validator;
 Use DateInterval;
 use App\User;
@@ -20,7 +20,7 @@ class DentistAppointmentController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $appointments=DB::table('dentist_appointments')->where('dentist_id','=',$user->id)->orderByRaw('start_date')->get();
+        $appointments=DB::table('dentist_appointments')->where('dentist_id','=',$user->id)->where('end_date','>',Carbon::now('UTC')->addHour(3))->orderByRaw('start_date')->get();
         $services=DB::table('dentist_services')->where('dentist_id','=',$user->id)->get();
         
         return view('dentist.appointments', compact('appointments','user','services') );

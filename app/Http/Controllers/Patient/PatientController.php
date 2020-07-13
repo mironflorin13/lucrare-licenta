@@ -35,11 +35,11 @@ class PatientController extends Controller
         $user=Dentist::findOrFail($u);
         
         $services=DB::table('dentist_services')->where('dentist_id','=',$u)->orderBy('servicename')->get();
-        $review=DB::table('dentist_appointments')->where('dentist_id','=',$u)
-                                                 ->where('created_by_id','=',auth()->user()->id)
-                                                 ->where('end_date','<',Carbon::now('UTC')->addHour(3))
-                                                 ->get()->count();
-       
+        // $review=DB::table('dentist_appointments')->where('dentist_id','=',$u)
+        //                                          ->where('created_by_id','=',auth()->user()->id)
+        //                                          ->where('end_date','<',Carbon::now('UTC')->addHour(3))
+        //                                          ->get()->count();
+       $review=1;
         $reviews=DB::table('reviews')->where('dentist_id','=',$u)->get();
         $reviews_nr=$reviews->count();
         return view('patient.viewProfile',compact('user','services','review','reviews','reviews_nr'));
@@ -61,7 +61,8 @@ class PatientController extends Controller
         $end_date=new Datetime($dAt);
         $end_date->add(new DateInterval('PT' . 60 . 'M'));
         
-
+        $dentist=DB::table('dentist_profiles')->where('dentist_id','=',$request['id'])->first();
+        
         $ap=new DentistAppointment;
         $ap->service_name=$request['service_name'];
         $ap->created_by=auth()->user()->name;
@@ -76,10 +77,14 @@ class PatientController extends Controller
         $ap->save();
         $data=array(
             'date'=>$request['date'],
-            'time'=>$request['ora']
+            'time'=>$request['ora'],
+            'name'=>$dentist->name,
+            'location'=>$dentist->location, 
+            'address'=>$dentist->address,
         );
         Mail::to(auth()->user()->email)->send(new SuccessfullyScheduled($data));
-        \Session::flash('message',"You were successfully scheduled on ".$request['date']." at ".$request['ora']." o'clock .");
+        \Session::flash('message',"You were successfully scheduled!
+        A confirmation email has been sent with all the details!");
         return Redirect::to('/patient/allD');
     }
     public function createReview(Request $request){
@@ -171,7 +176,7 @@ class PatientController extends Controller
                                                         ->orWhereRaw('? BETWEEN start_date and end_date', $start) 
                                                         ->orWhereRaw('? BETWEEN start_date and end_date', $end);
                                                     })->first();
-            // var_dump($result,$start_date);
+            
             
             if($result==null)
             {

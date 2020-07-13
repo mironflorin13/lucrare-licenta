@@ -20,18 +20,18 @@
                     <thead>
                         <tr>
                             <th width="10"></th>
-                            <th>ID </th>
+                            <th>Nr</th>
                             <th>Service name</th>
                             <th>Price</th>
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
                     {{csrf_field()}}
-        
+                    <?php $nr=1 ?>
                     @foreach ($post as $value)
                         <tr class="post{{$value->id}}">
                             <th width="10">-</th>
-                            <th>{{$value->id}}</th>
+                            <th>{{$nr++}}</th>
                             <th>{{$value->servicename}}</th>
                             <th>{{$value->price}} lei</th>
                             <th >
